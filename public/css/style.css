@@ -26,7 +26,7 @@ header {
   margin: 2em 0;
   text-align: center;
 }
-h1, h2, h3 {
+h1, h2, h3, h4 {
   margin: 0;
   text-rendering: optimizeLegibility;
   text-align: center;
@@ -35,7 +35,7 @@ h1 {
   font-weight: 400;
   font-size: 3em;
 }
-h2 {
+h4 {
   font-weight: 300;
   margin-top: 0.5em;
 }
