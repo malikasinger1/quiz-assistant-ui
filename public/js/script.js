@@ -26,11 +26,22 @@ document.onkeydown = function (evt) {
 document.querySelector('button').addEventListener('click', () => {
   // change button color
   document.querySelector('button').style.background = "linear-gradient(180deg, #24760e 0%, #52d524 80%, #29c839 100%)";
-  
-  recognition.start();
-  
+
+  try {
+    recognition.start();
+
+  } catch (e) { // if recogination is already started, starting again will genrate error, so in this case stop it; toggle recogination
+    console.log("error")
+    // change button color
+    document.querySelector('button').style.background = "linear-gradient(180deg, #8d1b1b 0%, #ff0000 80%, #ff0000 100%)";
+
+    // play end audio
+    end_audio.play();
+  }
+
   // play start sound
   start_sound.play();
+
 });
 
 recognition.addEventListener('speechstart', () => {
@@ -39,7 +50,7 @@ recognition.addEventListener('speechstart', () => {
 
 recognition.addEventListener('result', (e) => {
   console.log('Result has been detected.');
-  
+
   // change button color
   document.querySelector('button').style.background = "linear-gradient(180deg, #8d1b1b 0%, #ff0000 80%, #ff0000 100%)";
 
@@ -66,23 +77,32 @@ recognition.addEventListener('error', (e) => {
 
 
 function synthVoice(text) {
-  
+
   const synth = window.speechSynthesis;
   const utterance = new SpeechSynthesisUtterance();
   utterance.text = text;
   // utterance.voice = voices[1] // microsoft zira
+
+  // // not using this anymore due to bad user experiance 
+  // utterance.onend = function (event) {
+  //   console.log("ended");
+  //   document.querySelector('button').click()
+  // };
+
   synth.speak(utterance);
 
   document.querySelector('button').addEventListener('click', () => {
     if (synth) synth.cancel() // cancel speaking when user press button again to start talking
   })
 
+
+
 }
 
 socket.on('bot reply', function (replyText) {
-  
+
   if (replyText == '') replyText = '(No answer)';
   outputBot.textContent = replyText;
-  
+
   synthVoice(replyText);
 });
