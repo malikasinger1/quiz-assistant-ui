@@ -29,6 +29,9 @@ document.querySelector('button').addEventListener('click', () => {
 
   try {
     recognition.start();
+    
+    // play start sound
+    start_sound.play();
 
   } catch (e) { // if recogination is already started, starting again will genrate error, so in this case stop it; toggle recogination
     console.log("error")
@@ -39,17 +42,16 @@ document.querySelector('button').addEventListener('click', () => {
     end_audio.play();
   }
 
-  // play start sound
-  start_sound.play();
+
 
 });
 
 recognition.addEventListener('speechstart', () => {
-  console.log('Speech has been detected.');
+  console.log('Speech recogination staerted.');
 });
 
 recognition.addEventListener('result', (e) => {
-  console.log('Result has been detected.');
+  console.log('speech recoginized.');
 
   // change button color
   document.querySelector('button').style.background = "linear-gradient(180deg, #8d1b1b 0%, #ff0000 80%, #ff0000 100%)";
@@ -81,6 +83,7 @@ function synthVoice(text) {
   const synth = window.speechSynthesis;
   const utterance = new SpeechSynthesisUtterance();
   utterance.text = text;
+
   // utterance.voice = voices[1] // microsoft zira
 
   // // not using this anymore due to bad user experiance 
