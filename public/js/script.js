@@ -15,8 +15,21 @@ recognition.maxAlternatives = 1;
 var start_sound = document.getElementById("myAudio");
 var end_audio = document.getElementById("myAudio1");
 
+// click on the big listening button on press of space bar
+document.onkeydown = function (evt) {
+  evt = evt || window.event;
+  if (evt.keyCode == 32) {
+    document.querySelector('button').click()
+  }
+};
+
 document.querySelector('button').addEventListener('click', () => {
+  // change button color
+  document.querySelector('button').style.background = "linear-gradient(180deg, #24760e 0%, #52d524 80%, #29c839 100%)";
+  
   recognition.start();
+  
+  // play start sound
   start_sound.play();
 });
 
@@ -26,7 +39,11 @@ recognition.addEventListener('speechstart', () => {
 
 recognition.addEventListener('result', (e) => {
   console.log('Result has been detected.');
+  
+  // change button color
+  document.querySelector('button').style.background = "linear-gradient(180deg, #8d1b1b 0%, #ff0000 80%, #ff0000 100%)";
 
+  // play end audio
   end_audio.play();
 
   let last = e.results.length - 1;
@@ -47,20 +64,25 @@ recognition.addEventListener('error', (e) => {
   outputBot.textContent = 'Error: ' + e.error;
 });
 
+
 function synthVoice(text) {
+  
   const synth = window.speechSynthesis;
   const utterance = new SpeechSynthesisUtterance();
   utterance.text = text;
-  utterance.voice = speechSynthesis.getVoices().filter(function (voice) {
-    return voice.name == "Google US English";
-  })[0];
-  // for local change string with this one "Microsoft Zira Desktop - English (United States)"
+  // utterance.voice = voices[1] // microsoft zira
   synth.speak(utterance);
+
+  document.querySelector('button').addEventListener('click', () => {
+    if (synth) synth.cancel() // cancel speaking when user press button again to start talking
+  })
+
 }
 
 socket.on('bot reply', function (replyText) {
-  synthVoice(replyText);
-
+  
   if (replyText == '') replyText = '(No answer)';
   outputBot.textContent = replyText;
+  
+  synthVoice(replyText);
 });

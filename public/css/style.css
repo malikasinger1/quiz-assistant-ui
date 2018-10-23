@@ -55,7 +55,7 @@ button {
   margin: 4em auto 3em;
   text-align: center;
   color: #fff;
-  background: linear-gradient(180deg, #39C2C9 0%, #3FC8C9 80%, #3FC8C9 100%);
+  background: linear-gradient(180deg, #8d1b1b 0%, #ff0000 80%, #ff0000 100%);
   box-shadow: 2px 5px 30px rgba(63, 200, 201, .4);
 
   will-change: transform, filter;
